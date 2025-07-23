@@ -154,11 +154,17 @@ public partial class TreeViewDisplay<TItem> : ComponentBase
         
         if (clientY is null)
         {
-            // _contextMenuTarget = ;
+            _contextMenuTarget = ItemList[Index];
         }
         else
         {
-            // _contextMenuTarget = ;
+            var relativeY = clientY - _treeViewMeasurements.BoundingClientRectTop;
+            relativeY = Math.Max(0, relativeY.Value);
+            
+            var indexLocal = (int)(relativeY / LineHeight);
+            indexLocal = IndexBasicValidation(indexLocal);
+            
+            _contextMenuTarget = ItemList[indexLocal];
         }
     }
     
