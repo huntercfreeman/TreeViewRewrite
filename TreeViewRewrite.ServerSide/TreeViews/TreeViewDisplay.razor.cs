@@ -75,8 +75,14 @@ public partial class TreeViewDisplay : ComponentBase
         var relativeY = mouseEventArgs.ClientY - _treeViewMeasurements.BoundingClientRectTop;
         relativeY = Math.Max(0, relativeY);
         
-        Index = (int)(relativeY / LineHeight);
-        _caretRowTop = Index * LineHeight;
+        var indexLocal = (int)(relativeY / LineHeight);
+        
+        if (indexLocal < 0)
+            indexLocal = 0;
+        else if (indexLocal >= _numberList.Count)
+            indexLocal = _numberList.Count - 1;
+        
+        Index = indexLocal;
         
         Console.WriteLine(_treeViewMeasurements);
     }
