@@ -8,7 +8,7 @@
      @onfocus="HandleOnFocus"
      @onblur="HandleOnBlur"
      @oncontextmenu="HandleOnContextMenu"
-     @oncontextmenu:preventDefault="true">
+     @oncontextmenu:preventDefault="@(ContextMenuRenderFragment is not null)">
     
     <div class="@CaretRowCssClass" style="height: @(_lineHeight)px; top: @(_caretRowTop)px;">
     </div>

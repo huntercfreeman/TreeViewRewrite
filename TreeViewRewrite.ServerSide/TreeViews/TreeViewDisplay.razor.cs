@@ -11,6 +11,13 @@ public partial class TreeViewDisplay<TItem> : ComponentBase
 {
     [Inject]
     private IJSRuntime JsRuntime { get; set; } = null!;
+    
+    /// <summary>
+    /// If non-null, this will replace the default browser's context menu.
+    /// If null, then the default browser's context menu will be used.
+    /// </summary>
+    [Parameter]
+    public RenderFragment<TItem>? ContextMenuRenderFragment { get; set; }
 
     private readonly List<int> _numberList = [1, 2, 3, 4];
     private Guid _guidId = Guid.NewGuid();
