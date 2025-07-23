@@ -13,13 +13,24 @@ public partial class TreeViewDisplay<TItem> : ComponentBase
     private IJSRuntime JsRuntime { get; set; } = null!;
     
     /// <summary>
+    /// You cannot modify the list that you provide here.
+    /// Enumeration was modified exceptions are possible if you do modify it.
+    /// </summary>
+    [Parameter, EditorRequired]
+    public IReadOnlyList<TItem> ItemList { get; set; }
+    /// <summary>
+    /// Every node has a set height (<see cref="LineHeight"/>). If you exceed this, your content will get cut off.
+    /// </summary>
+    [Parameter, EditorRequired]
+    public RenderFragment<TItem>? NodeRenderFragment { get; set; }
+    
+    /// <summary>
     /// If non-null, this will replace the default browser's context menu.
     /// If null, then the default browser's context menu will be used.
     /// </summary>
     [Parameter]
     public RenderFragment<TItem>? ContextMenuRenderFragment { get; set; }
 
-    private readonly List<int> _numberList = [1, 2, 3, 4];
     private Guid _guidId = Guid.NewGuid();
     private string _htmlId = null!;
     private int _caretRowTop = 0;
@@ -63,7 +74,7 @@ public partial class TreeViewDisplay<TItem> : ComponentBase
     }
     
     private bool _showContextMenu;
-    private int _contextMenuTarget;
+    private TItem _contextMenuTarget;
     
     protected override void OnInitialized()
     {
@@ -137,8 +148,8 @@ public partial class TreeViewDisplay<TItem> : ComponentBase
     {
         if (indexLocal < 0)
             return 0;
-        else if (indexLocal >= _numberList.Count)
-            return _numberList.Count - 1;
+        else if (indexLocal >= ItemList.Count)
+            return ItemList.Count - 1;
         
         return indexLocal;
     }

@@ -4,4 +4,8 @@
 
 <PageTitle>Index</PageTitle>
 
-<TreeViewDisplay TItem="int"/>
+<TreeViewDisplay TItem="int" ItemList="[1, 2, 3, 4]">
+    <NodeRenderFragment Context="number">
+        @number
+    </NodeRenderFragment>
+</TreeViewDisplay>

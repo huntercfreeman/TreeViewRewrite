@@ -15,19 +15,19 @@
     
     @{ var top = 0; }
     
-    @foreach (var number in _numberList)
+    @foreach (var item in ItemList)
     {
         <div class="di_common_treeview-node" style="height: @(_lineHeight)px; top: @(top)px;">
-            @number
+            @NodeRenderFragment(item)
         </div>
         
         top += _lineHeight;
     }
     
-    @if (_showContextMenu)
+    @if (_showContextMenu && ContextMenuRenderFragment is not null)
     {
         <div class="di_common_treeview-context-menu" style="top: @(_caretRowTop + _lineHeight)px;">
-            @_contextMenuTarget
+            @ContextMenuRenderFragment(_contextMenuTarget)
         </div>
     }
     
