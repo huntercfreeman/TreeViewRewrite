@@ -19,6 +19,12 @@ public partial class TreeViewDisplay : ComponentBase
     private int _lineHeight = 20;
     private int _caretRowTop = 0;
     
+    private bool _isFocused;
+    
+    private string CaretRowCssClass => _isFocused
+        ? "di_common_treeview-caret-row di_active"
+        : "di_common_treeview-caret-row";
+    
     protected override void OnInitialized()
     {
         _htmlId = $"luth_common_treeview-{_guidId}";
@@ -43,5 +49,15 @@ public partial class TreeViewDisplay : ComponentBase
         }
         
         _caretRowTop = _index * _lineHeight;
+    }
+    
+    private void HandleOnFocus()
+    {
+        _isFocused = true;
+    }
+    
+    private void HandleOnBlur()
+    {
+        _isFocused = false;
     }
 }

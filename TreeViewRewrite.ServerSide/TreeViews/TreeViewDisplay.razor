@@ -1,6 +1,6 @@
-<div class="di_common_treeview" tabindex="-1" @onclick="HandleOnClick" @onkeydown="HandleOnKeyDown">
+<div class="di_common_treeview" tabindex="-1" @onclick="HandleOnClick" @onkeydown="HandleOnKeyDown" @onfocus="HandleOnFocus" @onblur="HandleOnBlur">
     
-    <div class="di_common_treeview-caret-row" style="height: @(_lineHeight)px; top: @(_caretRowTop)px;">
+    <div class="@CaretRowCssClass" style="height: @(_lineHeight)px; top: @(_caretRowTop)px;">
     </div>
     
     @{ var top = 0; }
