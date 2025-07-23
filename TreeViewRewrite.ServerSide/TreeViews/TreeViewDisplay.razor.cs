@@ -22,7 +22,7 @@ public partial class TreeViewDisplay<TItem> : ComponentBase
     /// Every node has a set height (<see cref="LineHeight"/>). If you exceed this, your content will get cut off.
     /// </summary>
     [Parameter, EditorRequired]
-    public RenderFragment<TItem>? NodeRenderFragment { get; set; }
+    public RenderFragment<TItem> NodeRenderFragment { get; set; } = null!;
     
     /// <summary>
     /// If non-null, this will replace the default browser's context menu.
@@ -136,7 +136,30 @@ public partial class TreeViewDisplay<TItem> : ComponentBase
     
     private void HandleOnContextMenu()
     {
+        ContextMenuLogic(clientY: null);
+    }
+    
+    /// <summary>
+    /// 'contextmenu' and 'onmousedown' share this logic.
+    ///
+    /// HandleOnContextMenu(...)
+    /// - will invoke this method with 'clientY: null'.
+    ///
+    /// HandleOnMouseDown(...)
+    /// - will invoke this method with 'clientY: mouseEventArgs.ClientY'.
+    /// </summary>
+    private void ContextMenuLogic(double? clientY)
+    {
         _showContextMenu = true;
+        
+        if (clientY is null)
+        {
+            // _contextMenuTarget = ;
+        }
+        else
+        {
+            // _contextMenuTarget = ;
+        }
     }
     
     private void CalculateCaretRowTop()
