@@ -4,11 +4,15 @@
 
 <PageTitle>Index</PageTitle>
 
-<TreeViewDisplay TItem="int" ItemList="[1, 2, 3, 4]">
-    <NodeRenderFragment Context="number">
-        @number
+@{
+    var treeViewNodeList = new int[] { 1, 2, 3, 4 }.Select(x => new TreeViewNode<int>(x, 0)).ToList();
+}
+
+<TreeViewDisplay TItem="int" ItemList="treeViewNodeList">
+    <NodeRenderFragment Context="node">
+        @node.Item
     </NodeRenderFragment>
-    <ContextMenuRenderFragment Context="number">
-        The target number is: @number
+    <ContextMenuRenderFragment Context="node">
+        The target number is: @node.Item
     </ContextMenuRenderFragment>
 </TreeViewDisplay>

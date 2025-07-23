@@ -17,19 +17,19 @@ public partial class TreeViewDisplay<TItem> : ComponentBase
     /// Enumeration was modified exceptions are possible if you do modify it.
     /// </summary>
     [Parameter, EditorRequired]
-    public IReadOnlyList<TItem> ItemList { get; set; }
+    public IReadOnlyList<TreeViewNode<TItem>> ItemList { get; set; }
     /// <summary>
     /// Every node has a set height (<see cref="LineHeight"/>). If you exceed this, your content will get cut off.
     /// </summary>
     [Parameter, EditorRequired]
-    public RenderFragment<TItem> NodeRenderFragment { get; set; } = null!;
+    public RenderFragment<TreeViewNode<TItem>> NodeRenderFragment { get; set; } = null!;
     
     /// <summary>
     /// If non-null, this will replace the default browser's context menu.
     /// If null, then the default browser's context menu will be used.
     /// </summary>
     [Parameter]
-    public RenderFragment<TItem>? ContextMenuRenderFragment { get; set; }
+    public RenderFragment<TreeViewNode<TItem>>? ContextMenuRenderFragment { get; set; }
 
     private Guid _guidId = Guid.NewGuid();
     private string _htmlId = null!;
@@ -74,7 +74,7 @@ public partial class TreeViewDisplay<TItem> : ComponentBase
     }
     
     private bool _showContextMenu;
-    private TItem _contextMenuTarget;
+    private TreeViewNode<TItem> _contextMenuTarget;
     
     protected override void OnInitialized()
     {
