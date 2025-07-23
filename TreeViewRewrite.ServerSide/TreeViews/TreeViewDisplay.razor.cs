@@ -17,7 +17,7 @@ public partial class TreeViewDisplay<TItem> : ComponentBase
     /// Enumeration was modified exceptions are possible if you do modify it.
     /// </summary>
     [Parameter, EditorRequired]
-    public IReadOnlyList<TreeViewNode<TItem>> ItemList { get; set; }
+    public IReadOnlyList<TreeViewNode<TItem>> NodeList { get; set; }
     /// <summary>
     /// Every node has a set height (<see cref="LineHeight"/>). If you exceed this, your content will get cut off.
     /// </summary>
@@ -134,37 +134,23 @@ public partial class TreeViewDisplay<TItem> : ComponentBase
         _isFocused = false;
     }
     
-    private void HandleOnContextMenu()
-    {
-        ContextMenuLogic(clientY: null);
-    }
-    
-    /// <summary>
-    /// 'contextmenu' and 'onmousedown' share this logic.
-    ///
-    /// HandleOnContextMenu(...)
-    /// - will invoke this method with 'clientY: null'.
-    ///
-    /// HandleOnMouseDown(...)
-    /// - will invoke this method with 'clientY: mouseEventArgs.ClientY'.
-    /// </summary>
-    private void ContextMenuLogic(double? clientY)
+    private void HandleOnContextMenu(MouseEventArgs mouseEventArgs)
     {
         _showContextMenu = true;
         
-        if (clientY is null)
+        if (mouseEventArgs.Button == -1)
         {
-            _contextMenuTarget = ItemList[Index];
+            _contextMenuTarget = NodeList[Index];
         }
-        else
+        else if (mouseEventArgs.Button == 2)
         {
-            var relativeY = clientY - _treeViewMeasurements.BoundingClientRectTop;
-            relativeY = Math.Max(0, relativeY.Value);
+            var relativeY = mouseEventArgs.ClientY - _treeViewMeasurements.BoundingClientRectTop;
+            relativeY = Math.Max(0, relativeY);
             
             var indexLocal = (int)(relativeY / LineHeight);
-            indexLocal = IndexBasicValidation(indexLocal);
+            Index = IndexBasicValidation(indexLocal);
             
-            _contextMenuTarget = ItemList[indexLocal];
+            _contextMenuTarget = NodeList[indexLocal];
         }
     }
     
@@ -177,8 +163,8 @@ public partial class TreeViewDisplay<TItem> : ComponentBase
     {
         if (indexLocal < 0)
             return 0;
-        else if (indexLocal >= ItemList.Count)
-            return ItemList.Count - 1;
+        else if (indexLocal >= NodeList.Count)
+            return NodeList.Count - 1;
         
         return indexLocal;
     }

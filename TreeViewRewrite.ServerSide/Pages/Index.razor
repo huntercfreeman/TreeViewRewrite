@@ -8,7 +8,7 @@
     var treeViewNodeList = new int[] { 1, 2, 3, 4 }.Select(x => new TreeViewNode<int>(x, 0)).ToList();
 }
 
-<TreeViewDisplay TItem="int" ItemList="treeViewNodeList">
+<TreeViewDisplay TItem="int" NodeList="treeViewNodeList">
     <NodeRenderFragment Context="node">
         @node.Item
     </NodeRenderFragment>

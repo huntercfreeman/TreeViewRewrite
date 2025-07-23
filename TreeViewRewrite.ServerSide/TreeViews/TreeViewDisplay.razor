@@ -15,10 +15,10 @@
     
     @{ var top = 0; }
     
-    @foreach (var item in ItemList)
+    @foreach (var node in NodeList)
     {
         <div class="di_common_treeview-node" style="height: @(_lineHeight)px; top: @(top)px;">
-            @NodeRenderFragment(item)
+            @NodeRenderFragment(node)
         </div>
         
         top += _lineHeight;
