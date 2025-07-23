@@ -55,6 +55,9 @@ public partial class TreeViewDisplay : ComponentBase
         }
     }
     
+    private bool _showContextMenu;
+    private int _contextMenuTarget;
+    
     protected override void OnInitialized()
     {
         _htmlId = $"luth_common_treeview-{_guidId}";
@@ -111,6 +114,11 @@ public partial class TreeViewDisplay : ComponentBase
     private void HandleOnBlur()
     {
         _isFocused = false;
+    }
+    
+    private void HandleOnContextMenu()
+    {
+        _showContextMenu = true;
     }
     
     private void CalculateCaretRowTop()

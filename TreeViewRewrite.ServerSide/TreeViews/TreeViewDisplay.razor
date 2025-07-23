@@ -1,4 +1,14 @@
-<div id="@_htmlId" class="di_common_treeview" tabindex="-1" @onclick="HandleOnClick" @onkeydown="HandleOnKeyDown" @onfocus="HandleOnFocus" @onblur="HandleOnBlur">
+
+
+<div id="@_htmlId"
+     class="di_common_treeview"
+     tabindex="-1"
+     @onclick="HandleOnClick"
+     @onkeydown="HandleOnKeyDown"
+     @onfocus="HandleOnFocus"
+     @onblur="HandleOnBlur"
+     @oncontextmenu="HandleOnContextMenu"
+     @oncontextmenu:preventDefault="true">
     
     <div class="@CaretRowCssClass" style="height: @(_lineHeight)px; top: @(_caretRowTop)px;">
     </div>
@@ -12,6 +22,13 @@
         </div>
         
         top += _lineHeight;
+    }
+    
+    @if (_showContextMenu)
+    {
+        <div class="di_common_treeview-context-menu" style="top: @(_caretRowTop + _lineHeight)px;">
+            @_contextMenuTarget
+        </div>
     }
     
 </div>

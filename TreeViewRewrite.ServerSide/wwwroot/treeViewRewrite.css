@@ -15,6 +15,13 @@
     background-color: #b6ddff;
 }
 
+.di_common_treeview-context-menu {
+    position: absolute;
+    background-color: #ff0000;
+    min-width: 50px;
+    min-height: 50px;
+}
+
 .di_common_treeview-node {
     position: absolute;
 }
