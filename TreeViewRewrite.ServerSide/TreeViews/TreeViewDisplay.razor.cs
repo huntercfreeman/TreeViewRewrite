@@ -150,7 +150,7 @@ public partial class TreeViewDisplay<TItem> : ComponentBase
             var indexLocal = (int)(relativeY / LineHeight);
             Index = IndexBasicValidation(indexLocal);
             
-            _contextMenuTarget = NodeList[indexLocal];
+            _contextMenuTarget = NodeList[Index];
         }
     }
     
