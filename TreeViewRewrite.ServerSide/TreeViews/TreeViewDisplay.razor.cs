@@ -48,6 +48,7 @@ public partial class TreeViewDisplay : ComponentBase
         set
         {
             // It is presumed that all resulting index math is correct and won't be less than 0.
+            // This is because some actions might "wrap around" or other special ways to handle the validation.
         
             _index = value;
             CalculateCaretRowTop();
@@ -77,27 +78,29 @@ public partial class TreeViewDisplay : ComponentBase
         
         var indexLocal = (int)(relativeY / LineHeight);
         
-        if (indexLocal < 0)
-            indexLocal = 0;
-        else if (indexLocal >= _numberList.Count)
-            indexLocal = _numberList.Count - 1;
-        
-        Index = indexLocal;
+        Index = IndexBasicValidation(indexLocal);
         
         Console.WriteLine(_treeViewMeasurements);
     }
     
     private void HandleOnKeyDown(KeyboardEventArgs keyboardEventArgs)
     {
+        int indexLocal;
+    
         switch (keyboardEventArgs.Key)
         {
             case "ArrowDown":
-                Index++;
+                indexLocal = Index + 1;
                 break;
             case "ArrowUp":
-                Index--;
+                indexLocal = Index - 1;
+                break;
+            default:
+                indexLocal = Index;
                 break;
         }
+        
+        Index = IndexBasicValidation(indexLocal);
     }
     
     private void HandleOnFocus()
@@ -113,5 +116,15 @@ public partial class TreeViewDisplay : ComponentBase
     private void CalculateCaretRowTop()
     {
         _caretRowTop = Index * LineHeight;
+    }
+    
+    private int IndexBasicValidation(int indexLocal)
+    {
+        if (indexLocal < 0)
+            return 0;
+        else if (indexLocal >= _numberList.Count)
+            return _numberList.Count - 1;
+        
+        return indexLocal;
     }
 }
