@@ -7,7 +7,7 @@ namespace TreeViewRewrite.ServerSide.TreeViews;
 /// <summary>
 /// Every collapse creates a flat list.
 /// </summary>
-public partial class TreeViewDisplay : ComponentBase
+public partial class TreeViewDisplay<TItem> : ComponentBase
 {
     [Inject]
     private IJSRuntime JsRuntime { get; set; } = null!;
