@@ -15,8 +15,6 @@ public partial class TreeViewDisplay : ComponentBase
     private readonly List<int> _numberList = [1, 2, 3, 4];
     private Guid _guidId = Guid.NewGuid();
     private string _htmlId = null!;
-    private int _index;
-    private int _lineHeight = 20;
     private int _caretRowTop = 0;
     private TreeViewMeasurements _treeViewMeasurements;
     
@@ -25,6 +23,36 @@ public partial class TreeViewDisplay : ComponentBase
     private string CaretRowCssClass => _isFocused
         ? "di_common_treeview-caret-row di_active"
         : "di_common_treeview-caret-row";
+        
+    private int _lineHeight = 20;
+    
+    private int LineHeight
+    {
+        get => _lineHeight;
+        set
+        {
+            // Avoid divide by 0 exceptions
+            if (value == 0)
+                value = 1;
+            
+            _lineHeight = value;
+            CalculateCaretRowTop();
+        }
+    }
+    
+    private int _index;
+    
+    private int Index
+    {
+        get => _index;
+        set
+        {
+            // It is presumed that all resulting index math is correct and won't be less than 0.
+        
+            _index = value;
+            CalculateCaretRowTop();
+        }
+    }
     
     protected override void OnInitialized()
     {
@@ -40,10 +68,16 @@ public partial class TreeViewDisplay : ComponentBase
         }
     }
     
-    private async Task HandleOnClick()
+    private async Task HandleOnClick(MouseEventArgs mouseEventArgs)
     {
-        Console.WriteLine("HandleOnClick");
         _treeViewMeasurements = await JsRuntime.InvokeAsync<TreeViewMeasurements>("treeViewRewrite.focusAndMeasureTreeView", _htmlId, false);
+        
+        var relativeY = mouseEventArgs.ClientY - _treeViewMeasurements.BoundingClientRectTop;
+        relativeY = Math.Max(0, relativeY);
+        
+        Index = (int)(relativeY / LineHeight);
+        _caretRowTop = Index * LineHeight;
+        
         Console.WriteLine(_treeViewMeasurements);
     }
     
@@ -52,14 +86,12 @@ public partial class TreeViewDisplay : ComponentBase
         switch (keyboardEventArgs.Key)
         {
             case "ArrowDown":
-                _index++;
+                Index++;
                 break;
             case "ArrowUp":
-                _index--;
+                Index--;
                 break;
         }
-        
-        _caretRowTop = _index * _lineHeight;
     }
     
     private void HandleOnFocus()
@@ -70,5 +102,10 @@ public partial class TreeViewDisplay : ComponentBase
     private void HandleOnBlur()
     {
         _isFocused = false;
+    }
+    
+    private void CalculateCaretRowTop()
+    {
+        _caretRowTop = Index * LineHeight;
     }
 }
