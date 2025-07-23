@@ -18,6 +18,7 @@ public partial class TreeViewDisplay : ComponentBase
     private int _index;
     private int _lineHeight = 20;
     private int _caretRowTop = 0;
+    private TreeViewMeasurements _treeViewMeasurements;
     
     private bool _isFocused;
     
@@ -30,10 +31,20 @@ public partial class TreeViewDisplay : ComponentBase
         _htmlId = $"luth_common_treeview-{_guidId}";
     }
     
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _treeViewMeasurements = await JsRuntime.InvokeAsync<TreeViewMeasurements>("treeViewRewrite.measureTreeView", _htmlId);
+            Console.WriteLine(_treeViewMeasurements);
+        }
+    }
+    
     private async Task HandleOnClick()
     {
         Console.WriteLine("HandleOnClick");
-        await JsRuntime.InvokeVoidAsync("treeViewRewrite.focusHtmlElementById", _htmlId, false);
+        _treeViewMeasurements = await JsRuntime.InvokeAsync<TreeViewMeasurements>("treeViewRewrite.focusAndMeasureTreeView", _htmlId, false);
+        Console.WriteLine(_treeViewMeasurements);
     }
     
     private void HandleOnKeyDown(KeyboardEventArgs keyboardEventArgs)
